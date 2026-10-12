@@ -35,7 +35,9 @@ npm run cf:build
 npm run preview
 ```
 
-`preview` ejecuta la aplicación en el runtime de Workers. Para desplegar, autentícate con `npx wrangler login` y ejecuta `npm run deploy`. El nombre del Worker es `licoreria-demo` en `wrangler.jsonc`; si lo cambias, actualiza también `WORKER_SELF_REFERENCE`. No necesita R2 para los datos de esta demo.
+`preview` ejecuta la aplicación en el runtime de Workers. Para desplegar, autentícate con `npx wrangler login` y ejecuta `npm run deploy`. El nombre del Worker es `licoreriademo` en `wrangler.jsonc`; debe coincidir con el Worker conectado en Cloudflare. Si lo cambias, actualiza también `WORKER_SELF_REFERENCE`. No necesita R2 para los datos de esta demo.
+
+En Cloudflare Workers Builds, usa `npm run cf:build` como comando de compilación y `npx wrangler deploy` como comando de despliegue.
 
 ```sh
 npm run typecheck
