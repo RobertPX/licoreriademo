@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test --experimental-test-isolation=none tests/commands.test.mjs tests/repository.test.mjs",
+    "test:db": "node --test --experimental-test-isolation=none tests/database.test.mjs",
     "cf:build": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"

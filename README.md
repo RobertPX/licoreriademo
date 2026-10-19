@@ -1,46 +1,41 @@
 # La Cava · Demo de administración
 
-Next.js (App Router), React y TypeScript. Interfaz en español, moneda BOB y fechas de Bolivia.
+Administración de una licorería boliviana con Next.js App Router, React, TypeScript y Supabase. Interfaz en español, moneda BOB y fechas de Bolivia. Despliegue en Cloudflare Workers mediante OpenNext.
 
-## Desarrollo
+## Preparación
+
+Sigue [supabase/README.md](supabase/README.md) para crear las tablas, aplicar funciones y cargar datos ficticios. Copia `.env.example` a `.env.local`, configura la URL y la clave secreta del servidor y habilita explícitamente la demo con `DEMO_PUBLIC_ACCESS=true`.
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 
-Abre http://localhost:3000. Incluye resumen, punto de venta (QR, efectivo y tarjeta), inventario editable, alta de productos, historial, comprobantes internos y reportes CSV. Las ventas descuentan stock y registran el costo de cada producto para calcular el margen histórico.
+Abre http://localhost:3000. Los datos de productos, ventas, compras y negocio son compartidos en Supabase. El tema claro, oscuro o neón se guarda por navegador. Los datos antiguos de `lacava-v1` no se importan automáticamente.
 
-## Datos de la demo
+Incluye resumen, punto de venta (QR, efectivo y tarjeta registrados manualmente), inventario editable, alta de productos, historial, comprobantes internos y reportes CSV. Las ventas descuentan stock y guardan sus costos históricos. Las compras recibidas aumentan stock y actualizan el costo promedio ponderado.
 
-### Compras y configuraciones
+La API del Worker conserva las credenciales en el servidor. Las operaciones de venta y compra son transaccionales y los reintentos usan identificadores persistentes para evitar duplicados. Las ediciones de productos y negocio detectan versiones desactualizadas.
 
-Compras registra mercadería recibida con proveedor, fecha, factura/referencia, observaciones y varios productos. Cada recepción aumenta stock y actualiza el costo promedio ponderado; conserva el precio de venta y los costos históricos de ventas. No incluye cuentas por pagar ni órdenes pendientes.
+**Demo sin login:** cualquiera con acceso a la aplicación puede leer y modificar los datos compartidos. Antes de usar datos reales hacen falta autenticación y autorización. No hay facturación fiscal ni cobro bancario. El reporte PDF sigue pendiente.
 
-Configuraciones guarda nombre comercial, razón social, NIT, dirección principal, dirección de sucursal, ciudad, teléfono y correo. Incluye vista previa del encabezado y temas claro, oscuro y neón persistentes. El botón Reporte PDF se muestra en Reportes y Configuraciones; informa que la función está pendiente y no genera archivos todavía.
+## Verificación
 
-Los datos guardados en la versión anterior se migran al cargarse sin perder productos ni ventas. Pruebas de compras y migración: `node --experimental-strip-types --test tests/purchases.test.mjs`.
-
-Se guardan en `localStorage`, clave `lacava-v1`. No se comparten entre navegadores ni dispositivos. Para reiniciar elimina esa clave desde las herramientas del navegador. Los registros iniciales son ficticios; las existencias representan el inventario disponible al iniciar la demo. No hay autenticación ni facturación fiscal. El pago se registra manualmente; no procesa cobros.
-
-`src/lib/store.ts` contiene los modelos y el repositorio local. Al integrar Supabase, sustituye este repositorio por operaciones asíncronas y realiza la venta y el descuento de stock en una transacción del servidor. Añade Supabase Auth, roles y RLS antes de manejar datos reales. Nunca expongas una service role key en el cliente.
+```sh
+npm test
+npm run test:db # requiere PostgreSQL local; usa una base temporal
+npm run typecheck
+npm run build
+npm run cf:build
+```
 
 ## Cloudflare Workers
 
-Configurado con `@opennextjs/cloudflare`, Wrangler y `nodejs_compat`, siguiendo https://opennext.js.org/cloudflare/get-started. No usa runtime Edge ni una base de datos.
+Se conserva el Worker `licoreriademo` y su configuración. Agrega `SUPABASE_URL`, el secret `SUPABASE_SECRET_KEY` y `DEMO_PUBLIC_ACCESS=true` en las variables de ejecución del Worker. Para preview local, completa `.dev.vars` desde `.dev.vars.example`.
 
 ```sh
-npm run build
-npm run cf:build
 npm run preview
+npm run deploy
 ```
 
-`preview` ejecuta la aplicación en el runtime de Workers. Para desplegar, autentícate con `npx wrangler login` y ejecuta `npm run deploy`. El nombre del Worker es `licoreriademo` en `wrangler.jsonc`; debe coincidir con el Worker conectado en Cloudflare. Si lo cambias, actualiza también `WORKER_SELF_REFERENCE`. No necesita R2 para los datos de esta demo.
-
-En Cloudflare Workers Builds, usa `npm run cf:build` como comando de compilación y `npx wrangler deploy` como comando de despliegue.
-
-```sh
-npm run typecheck
-```
-
-Las fuentes web tienen alternativas del sistema si no hay conexión.
+En Workers Builds, el build sigue siendo `npm run cf:build` y el deploy `npx wrangler deploy`. No necesita R2 para almacenar datos. Consulta las instrucciones completas y las comprobaciones entre dispositivos en [supabase/README.md](supabase/README.md).
