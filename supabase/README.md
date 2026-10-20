@@ -59,6 +59,8 @@ npm run preview
 
 En Workers Builds conserva `npm run cf:build` como build y `npx wrangler deploy` como deploy. No se necesitan claves durante el build: se leen en tiempo de ejecución mediante el contexto de OpenNext y, en `next dev`, mediante `.env.local`. Las variables exclusivas del entorno de compilación no sustituyen los secrets del Worker.
 
+La opción `keep_vars: true` en `wrangler.jsonc` conserva las variables configuradas en el panel durante los despliegues con Wrangler. Si un despliegue anterior ya las eliminó, vuelve a configurar `SUPABASE_URL` y `DEMO_PUBLIC_ACCESS=true` como variables de ejecución y verifica que `SUPABASE_SECRET_KEY` siga presente como secret. Esta opción no recupera valores que ya se hayan borrado.
+
 No agregues las claves a `wrangler.jsonc`. Las credenciales locales de Wrangler tampoco deben publicarse.
 
 ## 4. Comprobar la demo
