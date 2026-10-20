@@ -17,7 +17,7 @@ Incluye resumen, punto de venta (QR, efectivo y tarjeta registrados manualmente)
 
 La API del Worker conserva las credenciales en el servidor. Las operaciones de venta y compra son transaccionales y los reintentos usan identificadores persistentes para evitar duplicados. Las ediciones de productos y negocio detectan versiones desactualizadas.
 
-**Demo sin login:** cualquiera con acceso a la aplicación puede leer y modificar los datos compartidos. Antes de usar datos reales hacen falta autenticación y autorización. No hay facturación fiscal ni cobro bancario. El reporte PDF sigue pendiente.
+**Demo sin login:** cualquiera con acceso a la aplicación puede leer y modificar los datos compartidos. Antes de usar datos reales hacen falta autenticación y autorización. No hay facturación fiscal ni cobro bancario. Los reportes PDF incluyen resumen, ventas detalladas, compras e inventario actual, con encabezado del negocio, moneda BOB y fechas de Bolivia. En Reportes respetan el período seleccionado; en Configuraciones abarcan los últimos 30 días.
 
 ## Verificación
 

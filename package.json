@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test --experimental-test-isolation=none tests/commands.test.mjs tests/repository.test.mjs",
+    "test": "node --experimental-strip-types --test --experimental-test-isolation=none tests/commands.test.mjs tests/repository.test.mjs tests/reports.test.mjs",
     "test:db": "node --test --experimental-test-isolation=none tests/database.test.mjs",
     "cf:build": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20.10",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.9",
     "lucide-react": "1.55.0",
     "next": "16.3.8",
     "react": "19.3.0",

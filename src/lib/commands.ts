@@ -44,7 +44,7 @@ export function validateCommand(value:unknown):Command{
    }else{
      text(p.supplier,'Proveedor',120);text(p.reference,'Referencia',80,false);text(p.notes,'Observaciones',500,false);
      text(p.date,'Fecha',40);
-     if(!/^\d{4}-\d{2}-\d{2}T12:00:00-04:00$/.test(p.date as string)||!Number.isFinite(Date.parse(p.date as string)))throw new Error('Fecha inválida.');
+     if(!/^\d{4}-\d{2}-\d{2}T12:00:00-04:00$/.test(p.date as string)||!Number.isFinite(Date.parse(p.date as string))||new Date(p.date as string).toISOString().slice(0,10)!==(p.date as string).slice(0,10))throw new Error('Fecha inválida.');
    }
    break;
  }

@@ -83,7 +83,7 @@ Los datos de negocio anteriores en `lacava-v1` no se importan automáticamente a
 - RLS está activado en todas las tablas; anon y authenticated no tienen acceso directo. Las funciones usan `security invoker`, un `search_path` vacío y ejecución restringida a service_role. La clave privilegiada solo vive en el servidor.
 - `DEMO_PUBLIC_ACCESS=true` habilita lectura y escritura compartida **sin identidad ni roles**. Quien acceda a la web puede operar la tienda. No uses datos sensibles en esta fase. Puedes proteger la presentación con Cloudflare Access antes de incorporar login propio.
 - Antes de un uso comercial real: añadir Auth, autorización por rol/negocio en la API y políticas correspondientes, límites de tráfico en Cloudflare, backups y recuperación comprobada. El historial se carga completo; para un volumen grande debe paginarse y calcular reportes en servidor.
-- No hay procesamiento bancario, facturación fiscal, devoluciones ni cancelaciones. El PDF sigue marcado como pendiente; esta integración no cambia su estado.
+- No hay procesamiento bancario, facturación fiscal, devoluciones ni cancelaciones. Los reportes PDF y CSV se generan en el navegador con los datos cargados; el PDF incluye encabezado comercial, resumen, ventas, compras e inventario actual.
 
 ## Pruebas de base de datos
 
